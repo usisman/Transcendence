@@ -1,0 +1,18 @@
+{
+  // TypeScript'in Node.js + ES module hedefi için derleme ayarlarını belirliyoruz.
+  "compilerOptions": {
+    "target": "ES2022",
+    // NodeNext, Fastify projesinde import/export'u ESM şeklinde kullanmamızı sağlıyor.
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    // Tüm olası tip hatalarını yakalamak için strict mod aktiftir.
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    // build çıktısını dist klasörüne alıyoruz; Dockerfile bu klasörü kullanabilir.
+    "outDir": "dist",
+    "isolatedModules": true
+  },
+  // src ve scripts altındaki TypeScript dosyalarını derlemeye dahil ediyoruz.
+  "include": ["src", "scripts"]
+}

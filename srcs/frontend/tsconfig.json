@@ -1,0 +1,22 @@
+{
+    // Modern tarayıcılar için çıktıyı optimize edecek şekilde hedef belirliyoruz.
+    "compilerOptions": {
+      "target": "ES2020",
+      // Native ES modülleri üzerinden bundle edilmesini sağlıyoruz (Vite tercih ediyor).
+      "module": "ESNext",
+      // Vite'in bundler modül çözümlemesiyle uyumlu hale getiriyoruz.
+      "moduleResolution": "Bundler",
+      // Tip güvenliğini artırmak için strict modu aktifleştiriyoruz.
+      "strict": true,
+      // CommonJS paketleriyle uyumlu import davranışı.
+      "esModuleInterop": true,
+      // Harici .d.ts dosyalarını hızlıca geçirmek için kütüphane tip kontrolünü atlıyoruz.
+      "skipLibCheck": true,
+      // İleride React JSX kullanmak istersek yapı hazır kalsın diye JSX seçeneğini belirliyoruz.
+      "jsx": "react-jsx",
+      // Mutlak yol kullanımlarında referans noktamız proje kökü olsun.
+      "baseUrl": "."
+    },
+    // Derleme sürecine dahil edilecek dosya/dizinleri listeliyoruz.
+    "include": ["src", "vite.config.ts"]
+  }

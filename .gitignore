@@ -1,0 +1,12 @@
+# Node dependencies
+node_modules/
+
+# Environment files
+srcs/backend/.env
+.env
+
+# Local TLS certs generated via mkcert
+srcs/docker/nginx/certs/
+
+# macOS artifacts
+.DS_Store

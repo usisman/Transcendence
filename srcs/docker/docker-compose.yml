@@ -1,0 +1,68 @@
+# Compose sürümünü sabitleyerek yeni Docker özelliklerinin tutarlı çalışmasını sağlıyoruz.
+version: "3.9"
+
+services:
+  backend:
+    # Fastify tabanlı API servisimiz; docker/backend/Dockerfile üzerinden build ediyoruz.
+    build:
+      context: ..
+      dockerfile: docker/backend/Dockerfile
+    env_file:
+      - ../backend/.env
+    environment:
+      NODE_ENV: production
+    expose:
+      - "3000"
+    # Backend yalnızca internal Docker ağına açık; nginx reverse proxy üzerinden erişiyoruz.
+    volumes:
+      # SQLite dosyasını kapsayıcı yeniden başlasa da korumak için host'ta saklıyoruz.
+      - backend-data:/app/data
+
+  frontend:
+    # Proje kökünü context olarak verip doğru Dockerfile yolunu kullanıyoruz (docker/frontend).
+    build:
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
+    working_dir: /app
+    # Basitlik için kopya üstünden çalışıyoruz (bind mount yok):
+    # development'ta kod değişince yeniden build gerekir.
+    expose:
+      - "5173"
+    command: ["npm","run","dev","--","--host","0.0.0.0"]
+  nginx:
+    # nginx imajını aynı şekilde proje kökündeki docker/nginx tanımından üretir hale getiriyoruz.
+    build:
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - frontend
+      - backend
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    depends_on:
+      - backend
+  grafana:
+    image: grafana/grafana:10.4.2
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  # Backend veritabanı için persistan depolama.
+  backend-data:
+  prometheus-data:
+  grafana-data:
