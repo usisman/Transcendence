@@ -1,0 +1,16 @@
+{
+  "name": "pong",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild script.ts --bundle --outfile=main.js --target=es2015 --format=iife",
+    "watch": "esbuild script.ts --bundle --outfile=main.js --target=es2015 --format=iife --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  }
+}
